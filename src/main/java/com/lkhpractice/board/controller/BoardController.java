@@ -200,7 +200,7 @@ public class BoardController {
 		questionService.questionModify(question, questionForm.getSubject(), questionForm.getContent());
 		
 				
-		return String.format("redirect:/questionContentView/%s",id);	
+		return String.format("redirect:/questionContentView/%s", id);	
 	}
 	
 	@PreAuthorize("isAuthenticated()") // 로그인이 안 되어 있으면 login 페이지로 이동시킴
@@ -241,7 +241,6 @@ public class BoardController {
 		return String.format("redirect:/questionContentView/%s", answer.getQuestion().getId());	
 	}
 	
-	
 	@PreAuthorize("isAuthenticated()") // 로그인이 안 되어 있으면 login 페이지로 이동시킴
 	@RequestMapping(value = "/questionDelete/{id}")
 	public String questionDelete(@PathVariable("id") Integer id) {
@@ -251,7 +250,7 @@ public class BoardController {
 		return "redirect:/index";
 	}
 	
-	
+	@PreAuthorize("isAuthenticated()") // 로그인이 안 되어 있으면 login 페이지로 이동시킴
 	@RequestMapping(value = "/answerDelete/{id}")
 	public String answerModifyOk(@PathVariable("id") Integer id) {
 		
@@ -260,6 +259,19 @@ public class BoardController {
 		answerService.answerDelete(id);
 				
 		return String.format("redirect:/questionContentView/%s", answer.getQuestion().getId());		
+	}
+	
+	@PreAuthorize("isAuthenticated()") // 로그인이 안 되어 있으면 login 페이지로 이동시킴
+	@RequestMapping(value = "/questionLike/{id}")
+	public String questionDelete(@PathVariable("id") Integer id, Principal principal) {
+		
+		Question question = questionService.getQuestion(id);
+		
+		SiteMember siteMember = memberService.getMember(principal.getName()); // 현재 로그인 중인 유저의 정보(객체) 가져오기
+		
+		questionService.questionLike(question, siteMember);
+		
+		return String.format("redirect:/questionContentView/%s", id);	
 	}
 	
 }
