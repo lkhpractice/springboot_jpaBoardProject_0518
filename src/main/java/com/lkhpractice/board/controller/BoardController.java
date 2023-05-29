@@ -271,7 +271,7 @@ public class BoardController {
 		
 		questionService.questionLike(question, siteMember);
 		
-		return String.format("redirect:/questionContentView/%s", id);	
+		return String.format("redirect:/questionContentView/%s", id);
 	}
 	
 }
